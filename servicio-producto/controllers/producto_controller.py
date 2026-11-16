@@ -7,7 +7,7 @@ def obtener_productos(db: Session):
     return db.query(Producto).all()
 
 
-def obtener_productos_id(db: Session, codigo: int):
+def obtener_productos_ixxd(db: Session, codigo: int):
     return db.query(Producto).filter(Producto.codigo == codigo).first()
 
 def crear_producto(db: Session, producto: ProductoCreate):
