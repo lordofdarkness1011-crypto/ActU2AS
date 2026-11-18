@@ -11,7 +11,7 @@ export class FacturaService {
         if (factura){
             throw new ConflictException("Codigo ya existe");
         }
-        return db.orm.Factura.create({...data,fecha:data.fecha});
+        return db.orm.Factura.create({...data,fecha: data.fecha});
     }
     async consultar(codigo: string) {
         const factura = await db.orm.Factura.where({ codigo }).first();
@@ -46,5 +46,10 @@ export class FacturaService {
         }
 
         return factura;
+    }
+
+    //detalle de factura
+    async agregarDetalle(codigo: string, data:DetalleFactura){
+        
     }
 }
