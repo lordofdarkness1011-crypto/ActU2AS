@@ -2,7 +2,7 @@ import { DataTypes } from "sequelize";
 import { sequelize } from "../config/database.ts";
 
 export const Cliente = sequelize.define(
-  "Medico",
+  "Cliente",
   {
     codigo: {
       type: DataTypes.INTEGER,
@@ -20,7 +20,7 @@ export const Cliente = sequelize.define(
     },
   },
   {
-    tableName: "medico",
+    tableName: "cliente",
     timestamps: false,
   },
 );

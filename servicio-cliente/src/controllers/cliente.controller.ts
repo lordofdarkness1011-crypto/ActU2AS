@@ -13,8 +13,8 @@ export const obtenerClienteID = async (id: number) => {
 };
 
 export const crearCliente = async (data: any) => {
-  if (data!) {
-    throw Error("No puede estar vacio");
+  if (!data || !data.nombre || !data.direccion || !data.telefono) {
+    throw Error("Faltan campos obligatorios (nombre, direccion, telefono)");
   }
   return await Cliente.create(data);
 };

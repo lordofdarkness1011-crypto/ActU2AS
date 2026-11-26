@@ -3,13 +3,18 @@ import {db} from '../prisma/db.js'
 import { Factura } from '../models/factura.model.js';
 import { DetalleFactura } from '../models/detalle-factura.model.js';
 import { ProductoClienteService } from './producto-cliente.service.js';
+import { ClienteHttpService } from './cliente-http.service.js';
 
 @Injectable()
 export class FacturaService {
 
-        private readonly ProductoClienteService:ProductoClienteService
+        constructor(
+            private readonly productoCliente: ProductoClienteService,
+            private readonly clienteHttp: ClienteHttpService,
+        ) {}
         
     async crear(data: Factura){
+        await this.clienteHttp.verificarExistencia(data.cod_cliente);
         const factura = await db.orm.Factura.where({codigo: data.codigo}).first();
         if (factura){
             throw new ConflictException("Codigo ya existe");
@@ -38,7 +43,8 @@ export class FacturaService {
         const factura = await db.orm.Factura.where({codigo:codigo}).update(cambios);
         if (!factura){
             throw new NotFoundException("Factura no encontrada");
-        } 
+        }
+        return factura;
     }
 
     async eliminar(codigo: string) {

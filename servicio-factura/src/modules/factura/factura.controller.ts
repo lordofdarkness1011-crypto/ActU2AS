@@ -2,7 +2,7 @@ import { Controller, Get, Post, Put, Patch, Delete, Param, Body } from '@nestjs/
 import { FacturaService } from '../../services/factura.service.js';
 import { Factura } from '../../models/factura.model.js';
 
-@Controller('factura')
+@Controller('facturas')
 export class FacturaController {
     constructor(private readonly facturaService: FacturaService ){}
 
@@ -33,7 +33,7 @@ export class FacturaController {
         @Param('codigo') codigo: string, @Body() data: any) {
         return this.facturaService.agregarDetalle(codigo, data);
     }
-    @Patch(':codigo/detalle/:codigoDetalle')
+    @Patch(':codigo/detalles/:codigoDetalle')
     actualizarDetalle(
         @Param('codigo') codigo: string,
         @Param('codigoDetalle') codigoDetalle: string,
@@ -41,8 +41,8 @@ export class FacturaController {
     ) {
         return this.facturaService.actualizarDetalle(codigo, Number(codigoDetalle), data);
     }
-    @Delete(':codigo/detalles/codigoDetalle')
-    eliminarDetalle(@Param('codigo') codigo:string,@Param('codigoDetalle')codigoDetalle: number){
-        return this.facturaService.eliminarDetalle(codigo,codigoDetalle);
+    @Delete(':codigo/detalles/:codigoDetalle')
+    eliminarDetalle(@Param('codigo') codigo:string,@Param('codigoDetalle')codigoDetalle: string){
+        return this.facturaService.eliminarDetalle(codigo,Number(codigoDetalle));
     }
 }

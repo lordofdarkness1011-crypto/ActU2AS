@@ -6,12 +6,13 @@ from router.producto_router import router as producto_router
 app = FastAPI(
     title="Servicio Producto",
     description="Servicio desarrollado en Clases de Arquitectura de Software",
-    version="1.0.0"
+    version="1.0.0",
+    redirect_slashes=False,
 )
 Base.metadata.create_all(bind=engine)
 
-app.include_router(producto_router, prefix("/"))
+app.include_router(producto_router, prefix="/api")
 
 @app.get("/")
 def inicio():
-    return {"mensaje":"Servicio factura ejecutandóse con éxito"}
+    return {"mensaje":"Servicio producto ejecutándose con éxito"}

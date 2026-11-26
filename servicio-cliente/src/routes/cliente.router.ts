@@ -7,47 +7,49 @@ import {
   eliminarCliente,
 } from "../controllers/cliente.controller";
 
-const clienteRouter = (app: FastifyInstance) => {
+export const clienteRouter = (app: FastifyInstance) => {
   app.get("/clientes", obtenerClientes);
 
   app.get("/clientes/:id", async (req, res) => {
     try {
       const { id } = req.params as any;
-      await obtenerClienteID(id);
-    } catch (error) {
-      console.log("Error al obtener al cliente");
-      res.code(400).send({ mensaje: "Error al obtener el cliente" });
+      return await obtenerClienteID(id);
+    } catch (error: any) {
+      const status = error?.message === "Cliente no encontrado" ? 404 : 400;
+      res.code(status).send({ mensaje: error?.message ?? "Error al obtener el cliente" });
     }
   });
 
-  app.post("/clientes/:id", async (req, res) => {
+  app.post("/clientes", async (req, res) => {
     try {
       const cliente = req.body;
       return await crearCliente(cliente);
-    } catch (error) {
-      console.log("Error al crear el cliente");
-      res.code(400).send({ mensaje: "Error al crear el cliente" });
+    } catch (error: any) {
+      res.code(400).send({ mensaje: error?.message ?? "Error al crear el cliente" });
     }
   });
 
-  app.put("/clientes/:id", async (req, res) => {
+  const handleActualizar = async (req: any, res: any) => {
     try {
       const { id } = req.params as any;
       const cliente = req.body;
       return await actualizarClienteID(id, cliente);
-    } catch (error) {
-      console.log("Error al crear el cliente");
-      res.code(400).send({ mensaje: "Error al crear el cliente" });
+    } catch (error: any) {
+      const status = error?.message === "Cliente no encontrado" ? 404 : 400;
+      res.code(status).send({ mensaje: error?.message ?? "Error al actualizar el cliente" });
     }
-  });
+  };
+
+  app.put("/clientes/:id", handleActualizar);
+  app.patch("/clientes/:id", handleActualizar);
 
   app.delete("/clientes/:id", async (req, res) => {
     try {
       const { id } = req.params as any;
       return await eliminarCliente(id);
-    } catch (error) {
-      console.log("Error al eliminar el cliente");
-      res.code(400).send({ mensaje: "Error al eliminar el cliente" });
+    } catch (error: any) {
+      const status = error?.message === "Cliente no encontrado" ? 404 : 400;
+      res.code(status).send({ mensaje: error?.message ?? "Error al eliminar el cliente" });
     }
   });
 };

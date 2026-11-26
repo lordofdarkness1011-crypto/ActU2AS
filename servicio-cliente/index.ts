@@ -1,12 +1,12 @@
 import fastify from "fastify";
-import {sequelize} from "./src/config/database";
-import {clienteRouter} from "./src/routes/cliente.router";
-const PORT = Number (process.env.PORT)||3001;
+import { sequelize } from "./src/config/database";
+import { clienteRouter } from "./src/routes/cliente.router";
+const PORT = Number(process.env.PORT) || 3001;
 const app = fastify({
-  logger:true
+  logger: true
 });
-app.register(clienteRouter,{prefix:"/api"});
-const iniciar = async() = {
+app.register(clienteRouter, { prefix: "/api" });
+const iniciar = async () => {
   try {
     await sequelize.authenticate();
     await sequelize.sync();
@@ -14,7 +14,11 @@ const iniciar = async() = {
       port: PORT,
       host: "0.0.0.0"
     });
-    console.log("Microservicio cliente ejecutando en el puerto: "+PORT)
+    console.log("Microservicio cliente ejecutando en el puerto: " + PORT);
+  } catch (error) {
+    console.error("Error al iniciar el servidor:", error);
+    process.exit(1);
   }
+};
 
-}
+iniciar();

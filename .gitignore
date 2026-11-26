@@ -1,0 +1,9 @@
+# Variables de entorno (permitir solo .env.example)
+.env
+.env.*
+!.env.example
+
+# Archivos del sistema y logs
+.DS_Store
+Thumbs.db
+*.log
